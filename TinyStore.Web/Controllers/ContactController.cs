@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TinyStore.Web.Controllers;
 
-public class HomeController : Controller
+public class ContactController : Controller
 {
     public IActionResult Index()
     {
