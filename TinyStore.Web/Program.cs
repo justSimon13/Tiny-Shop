@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TinyStore.Application;
+using TinyStore.Application.Services;
 using TinyStore.Infrastructure;
 using TinyStore.Infrastructure.Persistence;
 using TinyStore.Infrastructure.Repositories;
@@ -18,6 +19,7 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddScoped<DataSeeder>();
+builder.Services.AddScoped<ProductService>();
 
 var app = builder.Build();
 
