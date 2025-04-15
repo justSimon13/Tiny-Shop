@@ -20,25 +20,23 @@
                     </svg>
                 </button>
                 <nav class="hidden md:flex md:flex-row md:space-x-6 md:space-y-0">
-                    <a asp-area="" asp-controller="Home" asp-action="Index" class="text-gray-800 hover:text-blue-600 px-2 py-2 md:py-0">Start</a>
-                    <a asp-area="" asp-controller="Product" asp-action="Index" class="text-gray-800 hover:text-blue-600 px-2 py-2 md:py-0">Produkte</a>
-                    <a asp-area="" asp-controller="About" asp-action="Index" class="text-gray-800 hover:text-blue-600 px-2 py-2 md:py-0">Über uns</a>
-                    <a asp-area="" asp-controller="Contact" asp-action="Index" class="text-gray-800 hover:text-blue-600 px-2 py-2 md:py-0">Kontakt</a>
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="text-gray-800 hover:text-amber-500 px-2 py-2 md:py-0">Start</a>
+                    <a asp-area="" asp-controller="Product" asp-action="Index" class="text-gray-800 hover:text-amber-500 px-2 py-2 md:py-0">Produkte</a>
+                    <a asp-area="" asp-controller="About" asp-action="Index" class="text-gray-800 hover:text-amber-500 px-2 py-2 md:py-0">Über uns</a>
+                    <a asp-area="" asp-controller="Contact" asp-action="Index" class="text-gray-800 hover:text-amber-500 px-2 py-2 md:py-0">Kontakt</a>
                 </nav>
             </div>
 
             <nav id="navMenu" class="hidden container absolute bg-white z-20 border-t shadow-md border-[#0000004d] pt-4 mx-auto flex-col gap-4 px-4 pb-4 transition-all duration-300 ease-in-out">
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="text-gray-700 hover:text-indigo-600">Start</a>
-                <a asp-area="" asp-controller="Product" asp-action="Index" class="text-gray-700 hover:text-indigo-600">Produkte</a>
-                <a asp-area="" asp-controller="About" asp-action="Index" class="text-gray-700 hover:text-indigo-600">Über uns</a>
-                <a asp-area="" asp-controller="Contact" class="text-gray-700 hover:text-indigo-600">Kontakt</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="text-gray-700 hover:text-amber-500">Start</a>
+                <a asp-area="" asp-controller="Product" asp-action="Index" class="text-gray-700 hover:text-amber-500">Produkte</a>
+                <a asp-area="" asp-controller="About" asp-action="Index" class="text-gray-700 hover:text-amber-500">Über uns</a>
+                <a asp-area="" asp-controller="Contact" class="text-gray-700 hover:text-amber-500">Kontakt</a>
             </nav>
         </header>
 
-        <main class="flex-grow">
-            <div class="container mx-auto px-4 my-16">
-                @RenderBody()
-            </div>
+        <main class="flex-grow mb-20">
+            @RenderBody()
         </main>
         <footer class="bg-gray-100">
             <footer class="bg-gray-100 border-t py-6 text-sm text-gray-600">
@@ -56,7 +54,7 @@
         </footer>
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="module" src="~/js/main.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

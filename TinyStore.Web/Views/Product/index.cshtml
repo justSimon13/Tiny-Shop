@@ -6,8 +6,19 @@
     var selectedCategory = ViewBag.SelectedCategory as Guid?;
 }
 
-<section class="max-w-7xl mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-6">
+<section alt="Photo by Quang Nguyen Vinh: https://www.pexels.com/photo/people-inside-bar-2159074/" class="relative bg-[url('/assets/images/pexels-quang-nguyen-vinh-222549-2159074.jpg')] bg-cover bg-center text-white h-[60vh] flex items-center justify-center">
+    <div class="absolute inset-0 bg-black/50"></div>
+    <div class="relative z-10 text-center px-6">
+        <h1 class="text-5xl font-bold drop-shadow mb-4">Shop Our Collection</h1>
+        <p class="text-lg text-gray-200 max-w-xl mx-auto">
+            Premium beans, barista gear & everything between. Discover your next brew.
+        </p>
+    </div>
+</section>
+
+<section class="max-w-7xl mx-auto px-4 py-20">
+
+    <h2 class="text-3xl font-bold mb-10">
         @if (!string.IsNullOrWhiteSpace(input))
         {
             <text>Results for "@input"</text>
@@ -21,61 +32,66 @@
         {
             <text>All Products</text>
         }
-    </h1>
+    </h2>
 
-    <!-- Suche -->
-    <div class="max-w-xl mb-10">
-        <form method="get" action="/Product/Index" class="flex flex-col sm:flex-row gap-4">
-            <div class="w-full relative">
-                <input type="text" name="input" value="@input" placeholder="Search products..."
-                       class="search-input w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-500"/>
-                <div class="suggestions absolute w-full bg-white border border-gray-200 rounded shadow hidden"></div>
-            </div>
-            <button type="submit"
-                    class="bg-amber-600 text-white px-6 py-2 rounded hover:bg-amber-700 transition max-h-[42px]">
-                Search
-            </button>
-        </form>
-    </div>
-
-    <!-- Kategorien -->
-    <div class="mb-8">
-        <h2 class="text-xl font-semibold mb-2">Categories</h2>
-        <div class="flex flex-wrap gap-3">
-            <a href="/Product/Index" class="@(!selectedCategory.HasValue ? "bg-amber-500 text-white" : "bg-gray-100 text-gray-800") px-4 py-2 rounded-full hover:bg-gray-200 transition">
-                All
-            </a>
-            @foreach (var cat in categories)
-            {
-                var isSelected = selectedCategory.HasValue && cat.Id == selectedCategory.Value;
-                <a href="@Url.Action("Index", "Product", new { categoryId = cat.Id })"
-                   class="@(isSelected ? "bg-amber-500 text-white" : "bg-gray-100 text-gray-800") px-4 py-2 rounded-full hover:bg-gray-200 transition">
-                    @cat.Name
-                </a>
-            }
+    <form method="get" action="/Product/Index" class="flex flex-col lg:flex-row lg:items-end gap-4 mb-12">
+        <div class="flex-1 relative">
+            <input type="text" name="input" value="@input" placeholder="Search products..."
+                   class="search-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" />
+            <div class="suggestions absolute w-full bg-white border border-gray-200 rounded shadow hidden"></div>
         </div>
-    </div>
 
-    <!-- Produkte -->
+        <div class="relative w-48">
+            <select name="categoryId" class="px-4 py-3 border border-gray-300 rounded-lg w-full pr-8 focus:outline-none focus:ring-2 focus:ring-amber-500 appearance-none">
+                <option value="">All Categories</option>
+                @foreach (var cat in categories)
+                {
+                    @: <option value="@cat.Id" @(selectedCategory == cat.Id ? "selected" : "")>@cat.Name</option>
+                }
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </div>
+        </div>
+
+        <div>
+            <input type="number" name="minPrice" placeholder="Min €" step="0.01"
+                   class="w-full px-4 py-3 border border-gray-300 rounded-lg" />
+        </div>
+        <div>
+            <input type="number" name="maxPrice" placeholder="Max €" step="0.01"
+                   class="w-full px-4 py-3 border border-gray-300 rounded-lg" />
+        </div>
+
+        <div>
+            <button type="submit"
+                    class="bg-amber-600 text-white px-6 py-3 rounded-lg hover:bg-amber-700 transition font-medium w-full">
+                Filter
+            </button>
+        </div>
+    </form>
+
     @if (!Model.Any())
     {
-        <p class="text-gray-500">No products found.</p>
+        <p class="text-gray-500 text-lg">No products found.</p>
     }
     else
     {
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
             @foreach (var product in Model)
             {
-                <div class="bg-white shadow-md rounded-xl p-4 hover:shadow-lg transition">
+                <a href="@Url.Action("Details", "Product", new { id = product.Id })" class="bg-white shadow-md rounded-xl p-5 hover:shadow-lg transition flex flex-col">
                     @if (!string.IsNullOrWhiteSpace(product.ImageUrl))
                     {
-                        <img src="@product.ImageUrl" alt="@product.Name" class="w-auto h-48 object-cover rounded mb-4 mx-auto" />
+                        <div class="h-48 w-full flex items-center justify-center overflow-hidden rounded mb-4">
+                            <img src="@product.ImageUrl" alt="@product.Name" class="object-cover h-full w-auto" />
+                        </div>
                     }
-                    <h3 class="text-lg font-semibold mb-2">@product.Name</h3>
-                    <p class="text-gray-600 mb-4">@product.Price.ToString("0.00") €</p>
-                    <a href="@Url.Action("Details", "Product", new { id = product.Id })"
-                       class="text-indigo-600 hover:text-indigo-800 font-medium">Details ansehen</a>
-                </div>
+                    <h4 class="text-lg font-semibold mb-2">@product.Name</h4>
+                    <p class="text-gray-600">@product.Price.ToString("0.00") €</p>
+                </a>
             }
         </div>
     }
