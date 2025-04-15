@@ -5,45 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - TinyStore.Web</title>
     <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/TinyStore.Web.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TinyStore.Web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+    <div class="min-h-screen flex flex-col">
+        <header class="bg-white shadow-md">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <a href="/" class="text-2xl font-bold">TinyStore</a>
+                <button id="menuToggle" class="md:hidden">
+                    <svg id="menuIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-800">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M3.75 5.25h16.5m-16.5 6h16.5m-16.5 6h16.5" />
+                    </svg>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+                <nav class="hidden md:flex md:flex-row md:space-x-6 md:space-y-0">
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="text-gray-800 hover:text-blue-600 px-2 py-2 md:py-0">Start</a>
+                    <a asp-area="" asp-controller="Product" asp-action="Index" class="text-gray-800 hover:text-blue-600 px-2 py-2 md:py-0">Produkte</a>
+                    <a asp-area="" asp-controller="About" asp-action="Index" class="text-gray-800 hover:text-blue-600 px-2 py-2 md:py-0">Über uns</a>
+                    <a asp-area="" asp-controller="Contact" asp-action="Index" class="text-gray-800 hover:text-blue-600 px-2 py-2 md:py-0">Kontakt</a>
+                </nav>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - TinyStore.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+            <nav id="navMenu" class="hidden container border-t border-[#0000004d] pt-4 mx-auto flex-col gap-4 px-4 pb-4 transition-all duration-300 ease-in-out">
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="text-gray-700 hover:text-indigo-600">Start</a>
+                <a asp-area="" asp-controller="Product" asp-action="Index" class="text-gray-700 hover:text-indigo-600">Produkte</a>
+                <a asp-area="" asp-controller="About" asp-action="Index" class="text-gray-700 hover:text-indigo-600">Über uns</a>
+                <a asp-area="" asp-controller="Contact" class="text-gray-700 hover:text-indigo-600">Kontakt</a>
+            </nav>
+        </header>
+
+        <main class="flex-grow">
+            <div class="container mx-auto px-4 py-6">
+                @RenderBody()
+            </div>
+        </main>
+        <footer class="bg-gray-100">
+            <footer class="bg-gray-100 border-t py-6 text-sm text-gray-600">
+                <div class="container mx-auto px-4 flex flex-col md:flex-row items-center md:justify-between">
+                    <div class="mb-4 md:mb-0 text-center md:text-left">
+                        <a class="hover:text-gray-800 mx-2">Datenschutz</a>
+                        <a class="hover:text-gray-800 mx-2">Impressum</a>
+                        <a class="hover:text-gray-800 mx-2">Kontakt</a>
+                    </div>
+                    <div class="text-center md:text-right">
+                        © 2025 TinyStore – Alle Rechte vorbehalten.
+                    </div>
+                </div>
+            </footer>
+        </footer>
+    </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
