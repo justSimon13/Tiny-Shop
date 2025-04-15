@@ -2,33 +2,81 @@
 @{
     ViewData["Title"] = "Shop";
     var categories = ViewBag.Categories as IEnumerable<TinyStore.Domain.Category> ?? Enumerable.Empty<TinyStore.Domain.Category>();
+    var input = ViewBag.Input as string;
+    var selectedCategory = ViewBag.SelectedCategory as Guid?;
 }
 
 <section class="max-w-7xl mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-6">Produkte</h1>
+    <h1 class="text-3xl font-bold mb-6">
+        @if (!string.IsNullOrWhiteSpace(input))
+        {
+            <text>Results for "@input"</text>
+        }
+        else if (selectedCategory.HasValue)
+        {
+            var currentCat = categories.FirstOrDefault(c => c.Id == selectedCategory.Value)?.Name ?? "Filtered";
+            <text>@currentCat Products</text>
+        }
+        else
+        {
+            <text>All Products</text>
+        }
+    </h1>
 
+    <!-- Suche -->
+    <div class="max-w-xl mb-10">
+        <form method="get" action="/Product/Index" class="flex flex-col sm:flex-row gap-4">
+            <div class="w-full relative">
+                <input type="text" name="input" value="@input" placeholder="Search products..."
+                       class="search-input w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-500"/>
+                <div class="suggestions absolute w-full bg-white border border-gray-200 rounded shadow hidden"></div>
+            </div>
+            <button type="submit"
+                    class="bg-amber-600 text-white px-6 py-2 rounded hover:bg-amber-700 transition max-h-[42px]">
+                Search
+            </button>
+        </form>
+    </div>
+
+    <!-- Kategorien -->
     <div class="mb-8">
-        <h2 class="text-xl font-semibold mb-2">Kategorien</h2>
+        <h2 class="text-xl font-semibold mb-2">Categories</h2>
         <div class="flex flex-wrap gap-3">
+            <a href="/Product/Index" class="@(!selectedCategory.HasValue ? "bg-amber-500 text-white" : "bg-gray-100 text-gray-800") px-4 py-2 rounded-full hover:bg-gray-200 transition">
+                All
+            </a>
             @foreach (var cat in categories)
             {
-                <a href="@Url.Action("Category", "Product", new { id = cat.Id })"
-                   class="inline-block bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-full transition">
+                var isSelected = selectedCategory.HasValue && cat.Id == selectedCategory.Value;
+                <a href="@Url.Action("Index", "Product", new { categoryId = cat.Id })"
+                   class="@(isSelected ? "bg-amber-500 text-white" : "bg-gray-100 text-gray-800") px-4 py-2 rounded-full hover:bg-gray-200 transition">
                     @cat.Name
                 </a>
             }
         </div>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        @foreach (var product in Model)
-        {
-            <div class="bg-white shadow-md rounded-xl p-4 hover:shadow-lg transition">
-                <h3 class="text-lg font-semibold mb-2">@product.Name</h3>
-                <p class="text-gray-600 mb-4">@product.Price.ToString("0.00") €</p>
-                <a href="@Url.Action("Details", "Product", new { id = product.Id })"
-                   class="text-indigo-600 hover:text-indigo-800 font-medium">Details ansehen</a>
-            </div>
-        }
-    </div>
+    <!-- Produkte -->
+    @if (!Model.Any())
+    {
+        <p class="text-gray-500">No products found.</p>
+    }
+    else
+    {
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            @foreach (var product in Model)
+            {
+                <div class="bg-white shadow-md rounded-xl p-4 hover:shadow-lg transition">
+                    @if (!string.IsNullOrWhiteSpace(product.ImageUrl))
+                    {
+                        <img src="@product.ImageUrl" alt="@product.Name" class="w-auto h-48 object-cover rounded mb-4 mx-auto" />
+                    }
+                    <h3 class="text-lg font-semibold mb-2">@product.Name</h3>
+                    <p class="text-gray-600 mb-4">@product.Price.ToString("0.00") €</p>
+                    <a href="@Url.Action("Details", "Product", new { id = product.Id })"
+                       class="text-indigo-600 hover:text-indigo-800 font-medium">Details ansehen</a>
+                </div>
+            }
+        </div>
+    }
 </section>

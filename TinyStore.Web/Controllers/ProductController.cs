@@ -12,13 +12,24 @@ public class ProductController : Controller
         _productService = productService;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string? input, Guid? categoryId)
     {
         var products = await _productService.GetAllProductsAsync();
+
+        if (!string.IsNullOrWhiteSpace(input))
+            products = products.Where(p => p.Name.Contains(input, StringComparison.OrdinalIgnoreCase)).ToList();
+
+        if (categoryId.HasValue)
+            products = products.Where(p => p.CategoryId == categoryId.Value).ToList();
+
         var categories = await _productService.GetAllCategoriesAsync();
         ViewBag.Categories = categories;
+        ViewBag.Input = input;
+        ViewBag.SelectedCategory = categoryId;
+
         return View(products);
     }
+
 
     public async Task<IActionResult> Details(Guid id)
     {
@@ -33,5 +44,20 @@ public class ProductController : Controller
         var categories = await _productService.GetAllCategoriesAsync();
         ViewBag.Categories = categories;
         return View("Index", products);
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> Suggestions(string term)
+    {
+        if (string.IsNullOrWhiteSpace(term))
+            return Json(Array.Empty<object>());
+
+        var products = await _productService.GetAllProductsAsync();
+        var results = products
+            .Where(p => p.Name.Contains(term, StringComparison.OrdinalIgnoreCase))
+            .Select(p => new { p.Id, p.Name })
+            .Take(5);
+
+        return Json(results);
     }
 }

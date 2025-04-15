@@ -1,13 +1,18 @@
 @model TinyStore.Domain.Product
 
-<section class="max-w-2xl mx-auto px-4 py-8">
-    <h1 class="text-2xl font-bold mb-4">@Model.Name</h1>
+<section class="container">
+    <h1 class="text-2xl font-bold mb-20">@Model.Name</h1>
 
-    <p class="text-lg text-gray-700 mb-2"><strong>Preis:</strong> @Model.Price.ToString("0.00") €</p>
-    <p class="text-sm text-gray-500 mb-6"><strong>Kategorie-ID:</strong> @Model.CategoryId</p>
-
-    <a href="@Url.Action("Index", "Product")"
-       class="inline-block bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition">
-        Zurück zum Shop
-    </a>
+    <div class="flex flex-col sm:flex-row gap-20">
+        <div class="w-full md:w-1/2">
+            @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl" alt="@Model.Name" class="w-1/2 m-auto object-cover rounded"/>
+            }
+        </div>
+        <div class="w-full md:w-1/2">
+            <p class="text-lg text-gray-700 mb-2"><strong>Preis:</strong> @Model.Price.ToString("0.00") €</p>
+            <p class="text-sm text-gray-500 mb-6"><strong>Kategorie-ID:</strong> @Model.CategoryId</p>
+        </div>
+    </div>
 </section>

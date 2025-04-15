@@ -23,9 +23,9 @@ public class DataSeeder
         await _uow.Categories.AddAsync(electronics);
         await _uow.Categories.AddAsync(books);
 
-        await _uow.Products.AddAsync(new Product("Smartphone X", 799, electronics.Id));
-        await _uow.Products.AddAsync(new Product("Laptop Pro", 1299, electronics.Id));
-        await _uow.Products.AddAsync(new Product("Roman Bestseller", 19.99m, books.Id));
+        await _uow.Products.AddAsync(new Product("DELONGHI Dedica Style EC685.M Espressomaschine Silber Matt", 167.99m, electronics.Id, "/assets/images/delongi.webp"));
+        await _uow.Products.AddAsync(new Product("Lavazza Crema e Aroma", 15.41m, electronics.Id, "/assets/images/kaffee.png"));
+        await _uow.Products.AddAsync(new Product("DELONGHI DLSC059 Abschlagbehälter Edelstahl", 33.99m, books.Id, "/assets/images/pixelboxx-mss-81060271.webp"));
 
         await _uow.SaveChangesAsync();
     }
