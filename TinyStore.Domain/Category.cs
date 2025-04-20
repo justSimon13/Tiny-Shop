@@ -15,9 +15,4 @@ public class Category
     {
         Name = name;
     }
-
-    public void AddProduct(Product product)
-    {
-        _products.Add(product);
-    }
 }

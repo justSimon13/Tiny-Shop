@@ -4,9 +4,11 @@
     var categories = ViewBag.Categories as IEnumerable<TinyStore.Domain.Category> ?? Enumerable.Empty<TinyStore.Domain.Category>();
     var input = ViewBag.Input as string;
     var selectedCategory = ViewBag.SelectedCategory as Guid?;
+    var minPrice = ViewBag.MinPrice as decimal?;
+    var maxPrice = ViewBag.MaxPrice as decimal?;
 }
 
-<section alt="Photo by Quang Nguyen Vinh: https://www.pexels.com/photo/people-inside-bar-2159074/" class="relative bg-[url('/assets/images/pexels-quang-nguyen-vinh-222549-2159074.jpg')] bg-cover bg-center text-white h-[60vh] flex items-center justify-center">
+<section alt="Photo by Quang Nguyen Vinh: https://www.pexels.com/photo/people-inside-bar-2159074/" class="hero-section h-[70vh] relative bg-[url('/assets/images/pexels-quang-nguyen-vinh-222549-2159074.jpg')] bg-cover bg-center text-white flex items-center justify-center">
     <div class="absolute inset-0 bg-black/50"></div>
     <div class="relative z-10 text-center px-6">
         <h1 class="text-5xl font-bold drop-shadow mb-4">Shop Our Collection</h1>
@@ -57,11 +59,11 @@
         </div>
 
         <div>
-            <input type="number" name="minPrice" placeholder="Min €" step="0.01"
+            <input value="@minPrice" type="number" name="minPrice" placeholder="Min €" step="0.01"
                    class="w-full px-4 py-3 border border-gray-300 rounded-lg" />
         </div>
         <div>
-            <input type="number" name="maxPrice" placeholder="Max €" step="0.01"
+            <input value="@maxPrice" type="number" name="maxPrice" placeholder="Max €" step="0.01"
                    class="w-full px-4 py-3 border border-gray-300 rounded-lg" />
         </div>
 

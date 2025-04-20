@@ -12,7 +12,7 @@ public class ProductController : Controller
         _productService = productService;
     }
 
-    public async Task<IActionResult> Index(string? input, Guid? categoryId)
+    public async Task<IActionResult> Index(string? input, Guid? categoryId, decimal? minPrice, decimal? maxPrice)
     {
         var products = await _productService.GetAllProductsAsync();
 
@@ -22,10 +22,23 @@ public class ProductController : Controller
         if (categoryId.HasValue)
             products = products.Where(p => p.CategoryId == categoryId.Value).ToList();
 
+        if (minPrice.HasValue)
+        {
+            products = products.Where(p => p.Price >= minPrice).ToList();
+        }
+
+        if (maxPrice.HasValue)
+        {
+            products = products.Where(p => p.Price <= maxPrice).ToList();
+        }
+
         var categories = await _productService.GetAllCategoriesAsync();
+        
         ViewBag.Categories = categories;
         ViewBag.Input = input;
         ViewBag.SelectedCategory = categoryId;
+        ViewBag.MinPrice = minPrice;
+        ViewBag.MaxPrice = maxPrice;
 
         return View(products);
     }

@@ -13,7 +13,7 @@
             <p class="text-2xl text-amber-600 font-semibold mb-4">@Model.Price.ToString("0.00") €</p>
 
             <div class="text-gray-700 mb-6">
-                <p><strong>Category ID:</strong> @Model.CategoryId</p>
+                <p><strong>Category:</strong> @Model.Category?.Name</p>
             </div>
 
             <button class="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 py-3 rounded transition">
