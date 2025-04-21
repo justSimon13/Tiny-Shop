@@ -121,5 +121,15 @@ PROD_POSTGRES_PASSWORD=<your_prod_db_password>
   docker compose -f docker-compose.dev.yml exec tinyshop-dev bash
   ```
 
+## 📄 License
+
+TinyShop is released under the **Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0)**. This means:
+
+- 📌 **Non-Commercial Usage Only**: You may use, copy, adapt, and redistribute this software and its documentation for **non-commercial** purposes only.
+- 📌 **Attribution**: You must give appropriate credit, provide a link to the license, and indicate if changes were made.
+- 📌 **No Additional Restrictions**: You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+
+If you wish to use TinyShop commercially, please contact the author for a separate licensing arrangement.
+
 Happy shopping with TinyShop! 🚀
 
