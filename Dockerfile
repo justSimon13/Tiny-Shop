@@ -5,15 +5,15 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 # Projektdateien kopieren und Restoren
-COPY ["TinyStore.Web/TinyStore.Web.csproj", "TinyStore.Web/"]
-COPY ["TinyStore.Application/TinyStore.Application.csproj", "TinyStore.Application/"]
-COPY ["TinyStore.Infrastructure/TinyStore.Infrastructure.csproj", "TinyStore.Infrastructure/"]
-COPY ["TinyStore.Domain/TinyStore.Domain.csproj", "TinyStore.Domain/"]
-RUN dotnet restore "TinyStore.Web/TinyStore.Web.csproj"
+COPY ["TinyShop.Web/TinyShop.Web.csproj", "TinyShop.Web/"]
+COPY ["TinyShop.Application/TinyShop.Application.csproj", "TinyShop.Application/"]
+COPY ["TinyShop.Infrastructure/TinyShop.Infrastructure.csproj", "TinyShop.Infrastructure/"]
+COPY ["TinyShop.Domain/TinyShop.Domain.csproj", "TinyShop.Domain/"]
+RUN dotnet restore "TinyShop.Web/TinyShop.Web.csproj"
 
 # Restlichen Code kopieren und publizieren
 COPY . .
-WORKDIR "/src/TinyStore.Web"
+WORKDIR "/src/TinyShop.Web"
 RUN dotnet publish -c Release -o /app/publish
 
 # ----------------------------
@@ -29,4 +29,4 @@ COPY --from=build /app/publish .
 EXPOSE 80
 
 # Startbefehl
-ENTRYPOINT ["dotnet", "TinyStore.Web.dll"]
+ENTRYPOINT ["dotnet", "TinyShop.Web.dll"]

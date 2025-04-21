@@ -6,15 +6,15 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - ./TinyStore.API:/src/TinyStore.API:delegated
-      - ./TinyStore.Application:/src/TinyStore.Application:delegated
-      - ./TinyStore.Infrastructure:/src/TinyStore.Infrastructure:delegated
-      - ./TinyStore.Domain:/src/TinyStore.Domain:delegated
-    working_dir: /src/TinyStore.API
+      - ./TinyShop.API:/src/TinyShop.API:delegated
+      - ./TinyShop.Application:/src/TinyShop.Application:delegated
+      - ./TinyShop.Infrastructure:/src/TinyShop.Infrastructure:delegated
+      - ./TinyShop.Domain:/src/TinyShop.Domain:delegated
+    working_dir: /src/TinyShop.API
     command: dotnet watch run --urls=http://0.0.0.0:80
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__Default: "Host=postgres;Database=tinystoredb;Username=postgres;Password=postgres"
+      ConnectionStrings__Default: "Host=postgres;Database=tinyshopdb;Username=postgres;Password=postgres"
     ports:
       - "5000:80"
     depends_on:

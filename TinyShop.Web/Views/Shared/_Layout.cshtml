@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TinyShop.Web</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="min-h-screen flex flex-col">
+        <header class="nav bg-white shadow-md">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <a href="/" class="text-2xl font-bold">TinyShop</a>
+                <button id="menuToggle" class="md:hidden">
+                    <svg id="menuIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-800">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M3.75 5.25h16.5m-16.5 6h16.5m-16.5 6h16.5" />
+                    </svg>
+                </button>
+                <nav class="hidden md:flex md:flex-row md:space-x-6 md:space-y-0">
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="text-gray-800 hover:text-amber-500 px-2 py-2 md:py-0">Start</a>
+                    <a asp-area="" asp-controller="Product" asp-action="Index" class="text-gray-800 hover:text-amber-500 px-2 py-2 md:py-0">Produkte</a>
+                    <a asp-area="" asp-controller="About" asp-action="Index" class="text-gray-800 hover:text-amber-500 px-2 py-2 md:py-0">Über uns</a>
+                    <a asp-area="" asp-controller="Contact" asp-action="Index" class="text-gray-800 hover:text-amber-500 px-2 py-2 md:py-0">Kontakt</a>
+                </nav>
+            </div>
+
+            <nav id="navMenu" class="hidden container absolute bg-white z-20 border-t shadow-md border-[#0000004d] pt-4 mx-auto flex-col gap-4 px-4 pb-4 transition-all duration-300 ease-in-out">
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="text-gray-700 hover:text-amber-500">Start</a>
+                <a asp-area="" asp-controller="Product" asp-action="Index" class="text-gray-700 hover:text-amber-500">Produkte</a>
+                <a asp-area="" asp-controller="About" asp-action="Index" class="text-gray-700 hover:text-amber-500">Über uns</a>
+                <a asp-area="" asp-controller="Contact" class="text-gray-700 hover:text-amber-500">Kontakt</a>
+            </nav>
+        </header>
+
+        <main class="flex-grow mb-20">
+            @RenderBody()
+        </main>
+        <footer class="bg-gray-100">
+            <footer class="bg-gray-100 border-t py-6 text-sm text-gray-600">
+                <div class="container mx-auto px-4 flex flex-col md:flex-row items-center md:justify-between">
+                    <div class="mb-4 md:mb-0 text-center md:text-left">
+                        <a class="hover:text-gray-800 mx-2">Datenschutz</a>
+                        <a class="hover:text-gray-800 mx-2">Impressum</a>
+                        <a class="hover:text-gray-800 mx-2">Kontakt</a>
+                    </div>
+                    <div class="text-center md:text-right">
+                        © 2025 TinyShop – Alle Rechte vorbehalten.
+                    </div>
+                </div>
+            </footer>
+        </footer>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script type="module" src="~/js/main.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
