@@ -3,7 +3,6 @@ version: '3.8'
 services:
   postgres:
     image: postgres:15
-    container_name: tinyshop-postgres
     env_file:
       - .env
     environment:
@@ -12,7 +11,6 @@ services:
       POSTGRES_DB: "${PROD_POSTGRES_DB}"
     volumes:
       - pgdata:/var/lib/postgresql/data
-    restart: always
     networks:
       - default
 
@@ -20,27 +18,25 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      # kein target: so nimmt Docker den letzten (Runtime‑) Stage
-    container_name: tinyshop
+      # kein target: damit Runtime-Stage genutzt wird
     env_file:
       - .env
     environment:
       ASPNETCORE_ENVIRONMENT: Production
-      ASPNETCORE_URLS: "http://+:85"
+      ASPNETCORE_URLS: "http://0.0.0.0:${PORT}"
       ConnectionStrings__DefaultConnection: >-
         Host=${POSTGRES_HOST};Port=${POSTGRES_PORT};
         Database=${PROD_POSTGRES_DB};Username=${PROD_POSTGRES_USER};
         Password=${PROD_POSTGRES_PASSWORD}
     depends_on:
       - postgres
-    restart: on-failure
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik"
       - "traefik.http.routers.tinyshop.rule=Host(`tinyshop.simonfischer.dev`)"
       - "traefik.http.routers.tinyshop.entrypoints=websecure"
       - "traefik.http.routers.tinyshop.tls.certresolver=basic"
-      - "traefik.http.services.tinyshop.loadbalancer.server.port=85"
+      - "traefik.http.services.tinyshop.loadbalancer.server.port=${PORT}"
     networks:
       - default
       - traefik

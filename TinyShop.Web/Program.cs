@@ -37,6 +37,12 @@ using (var scope = app.Services.CreateScope())
     await seeder.SeedAsync();
 }
 
+using (var scope = app.Services.CreateScope())
+{
+    var ctx = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    ctx.Database.Migrate();
+}
+
 app.UseHttpsRedirection();
 app.UseRouting();
 

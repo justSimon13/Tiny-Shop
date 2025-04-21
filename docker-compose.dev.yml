@@ -3,7 +3,6 @@ version: '3.8'
 services:
   postgres:
     image: postgres:15
-    container_name: tinyshop-postgres
     env_file:
       - .env
     environment:
@@ -14,14 +13,12 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-    restart: always
 
   tinyshop:
     build:
       context: .
       dockerfile: Dockerfile
-      target: build           # SDK‑Image für dotnet watch
-    container_name: tinyshop-dev
+      target: build        # SDK-Image für dotnet watch
     env_file:
       - .env
     volumes:
@@ -29,19 +26,17 @@ services:
       - ./TinyShop.Application:/src/TinyShop.Application:delegated
       - ./TinyShop.Infrastructure:/src/TinyShop.Infrastructure:delegated
       - ./TinyShop.Domain:/src/TinyShop.Domain:delegated
-    working_dir: /src/TinyShop.Web
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      ASPNETCORE_URLS: "http://0.0.0.0:85"
+      ASPNETCORE_URLS: "http://0.0.0.0:${PORT}"
       ConnectionStrings__DefaultConnection: >-
         Host=${POSTGRES_HOST};Port=${POSTGRES_PORT};
         Database=${DEV_POSTGRES_DB};Username=${DEV_POSTGRES_USER};
         Password=${DEV_POSTGRES_PASSWORD}
     ports:
-      - "85:85"
+      - "${PORT}:${PORT}"
     depends_on:
       - postgres
-    restart: on-failure
 
 volumes:
   pgdata:
