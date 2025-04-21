@@ -16,5 +16,32 @@ services:
       - pgdata:/var/lib/postgresql/data
     restart: always
 
+  tinyshop:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: build           # SDK‑Image für dotnet watch
+    container_name: tinyshop-dev
+    env_file:
+      - .env
+    volumes:
+      - ./TinyShop.Web:/src/TinyShop.Web:delegated
+      - ./TinyShop.Application:/src/TinyShop.Application:delegated
+      - ./TinyShop.Infrastructure:/src/TinyShop.Infrastructure:delegated
+      - ./TinyShop.Domain:/src/TinyShop.Domain:delegated
+    working_dir: /src/TinyShop.Web
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: "http://0.0.0.0:85"
+      ConnectionStrings__DefaultConnection: >-
+        Host=${POSTGRES_HOST};Port=${POSTGRES_PORT};
+        Database=${DEV_POSTGRES_DB};Username=${DEV_POSTGRES_USER};
+        Password=${DEV_POSTGRES_PASSWORD}
+    ports:
+      - "85:85"
+    depends_on:
+      - postgres
+    restart: on-failure
+
 volumes:
   pgdata:

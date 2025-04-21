@@ -20,11 +20,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      # kein target: so nimmt Docker den letzten (Runtime‑) Stage
     container_name: tinyshop
     env_file:
       - .env
     environment:
       ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: "http://+:85"
       ConnectionStrings__DefaultConnection: >-
         Host=${POSTGRES_HOST};Port=${POSTGRES_PORT};
         Database=${PROD_POSTGRES_DB};Username=${PROD_POSTGRES_USER};
@@ -34,10 +36,11 @@ services:
     restart: on-failure
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=traefik"
       - "traefik.http.routers.tinyshop.rule=Host(`tinyshop.simonfischer.dev`)"
       - "traefik.http.routers.tinyshop.entrypoints=websecure"
       - "traefik.http.routers.tinyshop.tls.certresolver=basic"
-      - "traefik.docker.network=traefik"
+      - "traefik.http.services.tinyshop.loadbalancer.server.port=85"
     networks:
       - default
       - traefik
@@ -46,10 +49,7 @@ volumes:
   pgdata:
 
 networks:
-  # Standard‑Netzwerk für interne Kommunikation
   default:
     driver: bridge
-
-  # Externes Traefik‑Netzwerk (bestehend auf deinem Server)
   traefik:
     external: true

@@ -1,4 +1,6 @@
-# Build-Stage
+# ----------------------------
+# 1) Build‑Stage (SDK)
+# ----------------------------
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
@@ -12,10 +14,16 @@ COPY . .
 WORKDIR "/src/TinyShop.Web"
 RUN dotnet publish "TinyShop.Web.csproj" -c Release -o /app/publish
 
-# Runtime-Stage
+# ----------------------------
+# 2) Runtime‑Stage
+# ----------------------------
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/publish .
 
+# Script für Migrations + Start
+COPY entrypoint.sh .
+RUN chmod +x entrypoint.sh
+
 EXPOSE 80
-ENTRYPOINT ["dotnet", "TinyShop.Web.dll"]
+ENTRYPOINT ["./entrypoint.sh"]
