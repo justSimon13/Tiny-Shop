@@ -4,24 +4,52 @@ services:
   postgres:
     image: postgres:15
     container_name: tinyshop-postgres
+    env_file:
+      - .env
     environment:
-      POSTGRES_USER: "${POSTGRES_USER}"
-      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
-      POSTGRES_DB: "${POSTGRES_DB}"
+      POSTGRES_USER: "${PROD_POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${PROD_POSTGRES_PASSWORD}"
+      POSTGRES_DB: "${PROD_POSTGRES_DB}"
     volumes:
       - pgdata:/var/lib/postgresql/data
     restart: always
+    networks:
+      - default
 
   tinyshop:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: tinyshop
+    env_file:
+      - .env
     environment:
       ASPNETCORE_ENVIRONMENT: Production
-      ConnectionStrings__DefaultConnection: "Host=${POSTGRES_HOST};Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}"
+      ConnectionStrings__DefaultConnection: >-
+        Host=${POSTGRES_HOST};Port=${POSTGRES_PORT};
+        Database=${PROD_POSTGRES_DB};Username=${PROD_POSTGRES_USER};
+        Password=${PROD_POSTGRES_PASSWORD}
     depends_on:
       - postgres
     restart: on-failure
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tinyshop.rule=Host(`tinyshop.simonfischer.dev`)"
+      - "traefik.http.routers.tinyshop.entrypoints=websecure"
+      - "traefik.http.routers.tinyshop.tls.certresolver=basic"
+      - "traefik.docker.network=traefik"
+    networks:
+      - default
+      - traefik
 
 volumes:
   pgdata:
+
+networks:
+  # Standard‑Netzwerk für interne Kommunikation
+  default:
+    driver: bridge
+
+  # Externes Traefik‑Netzwerk (bestehend auf deinem Server)
+  traefik:
+    external: true

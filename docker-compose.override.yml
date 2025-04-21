@@ -1,22 +1,29 @@
 version: '3.8'
 
 services:
-  tinyapi:
+  tinyshop:
     build:
       context: .
       dockerfile: Dockerfile
+      target: build           # verwendet das SDK-Image für dotnet watch
+    env_file:
+      - .env
     volumes:
-      - ./TinyShop.API:/src/TinyShop.API:delegated
+      - ./TinyShop.Web:/src/TinyShop.Web:delegated
       - ./TinyShop.Application:/src/TinyShop.Application:delegated
       - ./TinyShop.Infrastructure:/src/TinyShop.Infrastructure:delegated
       - ./TinyShop.Domain:/src/TinyShop.Domain:delegated
-    working_dir: /src/TinyShop.API
-    command: dotnet watch run --urls=http://0.0.0.0:80
+    working_dir: /src/TinyShop.Web
+    # wir legen hier den Listen-Port auf 85 fest
+    command: dotnet watch run --urls=http://0.0.0.0:85
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__Default: "Host=postgres;Database=tinyshopdb;Username=postgres;Password=postgres"
+      ConnectionStrings__DefaultConnection: >-
+        Host=${POSTGRES_HOST};Port=${POSTGRES_PORT};
+        Database=${DEV_POSTGRES_DB};Username=${DEV_POSTGRES_USER};
+        Password=${DEV_POSTGRES_PASSWORD}
     ports:
-      - "5000:80"
+      - "85:85"               # hostPort:containerPort
     depends_on:
       - postgres
     restart: on-failure
